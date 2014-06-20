@@ -6,6 +6,9 @@ public:
 	bool OnGossipHello(Player * player, Creature * creature){
 		player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Level me up, Scotty!", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 1);
 		player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Nevermind.", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 2);
+		if (player->IsGameMaster()){
+			player->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Debug_Msg_Set_GM_63", GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF + 3); //Shouldn't need to be handled in Database. 
+		}
 		player->PlayerTalkClass->SendGossipMenu(1, creature->GetGUID());
 		return true;
 	}
@@ -24,6 +27,9 @@ public:
 			//chathandler->SendSysMessage("You don't want to be level 60? I'm sorry to hear.");
 			player->PlayerTalkClass->SendCloseGossip();
 			break;
+		case GOSSIP_ACTION_INFO_DEF + 3:
+			player->SetLevel(63);
+			player->PlayerTalkClass->SendCloseGossip();
 		}
 		return true;
 	}
